@@ -1,4 +1,4 @@
-# Spring_Study_MVC_1 for Inflearn
+# spring-study-MVC-1 for Inflearn
 
 <div>
   <h3>□ 스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술</h3>
