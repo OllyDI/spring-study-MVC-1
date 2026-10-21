@@ -2,7 +2,7 @@
 
 >26.10.21
 
-스프링 부트 서블릿 환경 구성
+### 스프링 부트 서블릿 환경 구성
 
 ```@ServletComponentScan``` 하위 패키지를 전부 찾아 서블릿 자동 등록
 
@@ -17,8 +17,9 @@ TRACE > DEBUG > INFO > WARN > ERROR > FATAL (또는 OFF) 순서
 
 <br>
 
-`HttpServletRequest` 기본 사용법 (옛날 방식 헤더를 전부 직접 생성) -> `servlet/basic/request/RequestHeaderServlet.java` 참고
+### `HttpServletRequest` 기본 사용법 (옛날 방식 헤더를 전부 직접 생성)
+`servlet/basic/request/RequestHeaderServlet.java` 참고
 
 <br>
 
-HTTP 요청 데이터 - GET 쿼리 파라미터
+### HTTP 요청 데이터 - GET 쿼리 파라미터
