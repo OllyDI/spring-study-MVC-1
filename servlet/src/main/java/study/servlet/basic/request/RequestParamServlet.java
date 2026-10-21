@@ -12,7 +12,6 @@ import java.util.Enumeration;
 
 /** * 1. 파라미터 전송 기능
  * http://localhost:8080/request-param?username=hello&age=20
- * <p>
  * 2. 동일한 파라미터 전송 가능
  * http://localhost:8080/request-param?username=hello&username=kim&age=20
  */
@@ -40,7 +39,7 @@ public class RequestParamServlet extends HttpServlet {
         System.out.println("[중복 이름 파라미터 조회] - start");
         String[] usernames = req.getParameterValues("username");
         for (String name : usernames) {
-            System.out.println("name = " + name);
+            System.out.println("username = " + name);
         }
         System.out.println("[중복 이름 파라미터 조회] - end");
         System.out.println();

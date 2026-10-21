@@ -20,7 +20,7 @@ public class ResponseHeaderServlet extends HttpServlet {
         res.setStatus(HttpServletResponse.SC_OK);
 
         // response-headers
-        res.setHeader("Content-Type", "text/plain/charset=utf-8");
+        res.setHeader("Content-Type", "text/plain;charset=utf-8");
         res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         res.setHeader("Pragma", "no-cache");
         res.setHeader("my-header", "hello");
