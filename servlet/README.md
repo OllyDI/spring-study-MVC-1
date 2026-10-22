@@ -50,7 +50,6 @@ TRACE > DEBUG > INFO > WARN > ERROR > FATAL (또는 OFF) 순서
 메시지 바디에 데이터를 포함해서 보냄 -> content-type을 반드시 지정해야 함
 
 [RequestBodyStringServlet.java](src/main/java/study/servlet/basic/request/RequestBodyStringServlet.java)
-
 데이터 읽기 line 19 `req.getInputStream()`
 
 <br>
@@ -78,7 +77,39 @@ HttpServletResponse 역할
 
 편의 메서드 line 29 ~ `content(res)`, `cookie(res)`, `redirect(res)`
 
+<br>
+
 ### HTTP 응답 데이터 - 단순 텍스트, HTML
  - 단순 텍스트 응답 - `writer.println("ok");`
  - HTML 응답 - [ResponseHtmlServlet.java](src/main/java/study/servlet/basic/response/ResponseHtmlServlet.java) 단순히 HTML을 보내면 됨
  - HTML API 응답 - [ResponseJsonServlet.java](src/main/java/study/servlet/basic/response/ResponseJsonServlet.java) `objectMapper.writeValueAsString()` 객체를 JSON으로 변환
+
+<br>
+
+>26.10.22
+
+## 서블릿, JSP, MVC 패턴
+기술이 변화한 순서대로 해보면서 단점 개선, 어떻게 바뀌는지 알아봄
+
+### 서블릿
+서블릿 회원관리 웹 애플리케이션 [memberEntity](src/main/java/study/servlet/domain/member), [HTML Form](src/main/java/study/servlet/web/servlet) 생성
+
+<br>
+
+### JSP - 기술력면이나 편의성면에서 최신 기술에 많이 밀림. 거의 안씀
+
+JSP 회원관리 웹 애플리케이션 [webapp](src/main/webapp/jsp) 생성
+
+<br>
+
+### MVC - 서블릿(컨트롤러), JSP(뷰) 사용 -> 한계가 있음
+
+[View](src/main/webapp/WEB-INF), [ServletMVC](src/main/java/study/servlet/web/servletmvc) 컨트롤러에서 뷰 이동을 위한 `req.getRequestDispatcher()` 사용
+
+한계
+ - [ServletMVC](src/main/java/study/servlet/web/servletmvc) View로 이동하는 `dispatcher.forward(req, res)` 중복
+ - [ServletMVC](src/main/java/study/servlet/web/servletmvc) ViewPath 중복
+ - [ServletMVC](src/main/java/study/servlet/web/servletmvc) req, res가 사용되지 않을 때도 있음 (필요 없는 코드)
+ - **기능이 복잡해질수록 공통으로 처리해야 하는 부분이 증가 -> 공통 처리가 어려움, 중복 증가**
+
+`프론트 컨트롤러 패턴`을 도입해서 해결
