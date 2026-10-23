@@ -113,3 +113,56 @@ JSP 회원관리 웹 애플리케이션 [webapp](src/main/webapp/jsp) 생성
  - **기능이 복잡해질수록 공통으로 처리해야 하는 부분이 증가 -> 공통 처리가 어려움, 중복 증가**
 
 `프론트 컨트롤러 패턴`을 도입해서 해결
+
+<br>
+
+>26.10.23
+
+## MVC 프레임워크 만들기 (이후 스프링 MVC 사용) - MVC 도입 위해서 프론트 컨트롤러 필요
+
+`FrontController` 스프링 MVC의 핵심 - 공통처리, 요청에 맞는 컨트롤러 호출 등
+`DispatcherServlet`도 `FrontController`패턴으로 구현되어 있음
+
+### 프론트 컨트롤러 V1 - V1부터 V5까지 단계적으로 도입
+
+[frontControllerV1](src/main/java/study/servlet/web/frontcontroller/v1/FrontControllerServletV1.java) `req.getRequestURI()`를 통해 접속 주소를 가져와 매핑 후 맞는 객체 호출
+
+<br>
+
+### 프론트 컨트롤러 V2 - V1에서 View를 분리해서 중복 제거
+
+[MyView.java](src/main/java/study/servlet/web/frontcontroller/MyView.java)를 통해 뷰를 분리 - 중복 제거
+
+[frontControllerV2](src/main/java/study/servlet/web/frontcontroller/v2/FrontControllerServletV2.java) 결과
+
+<br>
+
+### 프론트 컨트롤러 V3 - 모델 도입 서블릿(req, res) 종속성 제거, 뷰 이름 중복 제거(/WEB-INF/views/...)
+
+[ModelView.java](src/main/java/study/servlet/web/frontcontroller/ModelView.java) 모델 생성 - 뷰 이름, 모델
+
+[frontControllerV3](src/main/java/study/servlet/web/frontcontroller/v3/FrontControllerServletV3.java) 순서
+1. 경로 호출 후 컨트롤러 매핑
+2. line 41 - 42 `createParamMap(req)`로 req의 파라미터를 전부 꺼낸 후 모델에 담음
+3. line 44 - 45 컨트롤러에서 리턴한 `viewName` 논리 이름을 가져온 후 `ex) new-form` `viewResolver`호출 - 물리 경로 생성
+4. line 47 모델을 view에 넘겨줌
+5. [MyView.java](src/main/java/study/servlet/web/frontcontroller/MyView.java) line 23 모델에 담긴 데이터를 꺼내 `req.setAttribute()`(jsp형식 - 여기에 데이터를 담음)에 전부 담음
+6. [MyView.java](src/main/java/study/servlet/web/frontcontroller/MyView.java) line24 `viewPath`에 맞는 jsp로 이동 
+
+<br>
+
+### 프론트 컨트롤러 V4 - 컨트롤러에서의 ModelView 반복 생성 제거
+
+[controllerV4](src/main/java/study/servlet/web/frontcontroller/v4/controller) 컨트롤러가 ViewName만 반환
+
+[FrontControllerServletV4](src/main/java/study/servlet/web/frontcontroller/v4/FrontControllerServletV4.java) 컨트롤러에 line 44 모델만 생성해서 넘겨주면 끝
+
+<br>
+
+### 유연한 컨트롤러 V5 - V3-V4 컨트롤러 사용가능 (어댑터 패턴)
+
+1. [FrontControllerServletV5](src/main/java/study/servlet/web/frontcontroller/v5/FrontControllerServletV5.java) line 55 접속 주소가 잘못된 주소인지 확인
+2. [adapter](src/main/java/study/servlet/web/frontcontroller/v5/adapter)의 supports를 통해 해당 컨트롤러로 호환이 되는지 확인 -> line 61 [FrontControllerServletV5](src/main/java/study/servlet/web/frontcontroller/v5/FrontControllerServletV5.java)
+3. [FrontControllerServletV5](src/main/java/study/servlet/web/frontcontroller/v5/FrontControllerServletV5.java) line 63 ~ 해당 어댑터에서 반환된 모델로 뷰 랜더링
+
+V4 컨트롤러 어댑터 [ControllerV4HandlerAdapter](src/main/java/study/servlet/web/frontcontroller/v5/adapter/ControllerV4HandlerAdapter.java) line 30 ~ 33 - 기존 V4는 `viewName`반환 여기서는 `ModelView`반환
