@@ -159,10 +159,68 @@ JSP 회원관리 웹 애플리케이션 [webapp](src/main/webapp/jsp) 생성
 
 <br>
 
-### 유연한 컨트롤러 V5 - V3-V4 컨트롤러 사용가능 (어댑터 패턴)
+### 유연한 컨트롤러 V5 - V3-V4 컨트롤러 둘다 사용가능 (어댑터 패턴)
 
 1. [FrontControllerServletV5](src/main/java/study/servlet/web/frontcontroller/v5/FrontControllerServletV5.java) line 55 접속 주소가 잘못된 주소인지 확인
 2. [adapter](src/main/java/study/servlet/web/frontcontroller/v5/adapter)의 supports를 통해 해당 컨트롤러로 호환이 되는지 확인 -> line 61 [FrontControllerServletV5](src/main/java/study/servlet/web/frontcontroller/v5/FrontControllerServletV5.java)
 3. [FrontControllerServletV5](src/main/java/study/servlet/web/frontcontroller/v5/FrontControllerServletV5.java) line 63 ~ 해당 어댑터에서 반환된 모델로 뷰 랜더링
 
 V4 컨트롤러 어댑터 [ControllerV4HandlerAdapter](src/main/java/study/servlet/web/frontcontroller/v5/adapter/ControllerV4HandlerAdapter.java) line 30 ~ 33 - 기존 V4는 `viewName`반환 여기서는 `ModelView`반환
+
+<br>
+
+> 26.10.26
+
+## 스프링 MVC - 구조 이해
+
+### 스프링 MVC 전체 구조
+앞서 직접 만든 MVC와 스프링 MVC의 구조가 같음
+- FrontController -> DispatcherServlet
+- handlerMappingMap -> HandlerMapping
+- MyHandlerAdapter -> HandlerAdapter
+- ModelView -> ModelAndView
+- viewResolver -> ViewResolver
+- MyView -> View
+
+동작 순서
+1. 핸들러 조회: 핸들러 매핑을 통해 요청 URL에 매핑된 핸들러(컨트롤러) 조회
+2. 핸들러 어댑터 조회: 핸들러를 실행할 수 있는 핸들러 어댑터 조회
+3. 핸들러 어댑터 실행: 핸들러 어댑터 실행
+4. 핸들러 실행: 핸들러 어댑터가 실제 핸들러 실행
+5. ModelAndView 반환: 핸들러 어댑터는 핸들러가 반환하는 정보를 ModelAndView로 변환 후 반환
+6. viewResolver 호출: 뷰 리졸버를 찾고 실행
+   JSP의 경우: InternalResourceViewResolver 가 자동 등록, 사용
+7. View 반환: 뷰 리졸버는 뷰의 논리 이름을 물리 이름으로 바꾸고, 렌더링 역할을 담당하는 뷰 객체 반환
+   JSP의 경우 InternalResourceView(JstlView) 를 반환, 내부에 forward() 로직이 있음
+8. 뷰 렌더링: 뷰를 통해서 뷰 렌더링
+
+과거의 핸들러 매핑과 핸들러 어댑터 참고 [OldControllerAndHandler](src/main/java/study/servlet/web/springmvc/old)
+
+<br>
+
+### 스프링 MVC - 시작
+
+[스프링 MVC V1](src/main/java/study/servlet/web/springmvc/v1)
+
+@Controller: 컴포넌트 스캔 대상, 어노테이션 기반 컨트롤러로 인식(RequestMappingHandlerMapping)
+
+@RequestMapping: 요청 정보 매핑, 해당 URL이 호출되면 이 메서드 호출
+
+
+<br>
+
+### 스프링 MVC - 컨트롤러 통합
+
+[V1](src/main/java/study/servlet/web/springmvc/v1)에서 분리되어 있던 컨트롤러 통합
+
+[스프링 MVC V2](src/main/java/study/servlet/web/springmvc/v2/SpringMemberControllerV2.java) 클래스 레벨에 `@RequestMapping("/springmvc/v2/members")`을 추가하여 중복 제거
+
+<br>
+
+### 스프링 MVC - 실용적인 방식
+
+[스프링 MVC V3](src/main/java/study/servlet/web/springmvc/v3/SpringMemberControllerV3.java) 
+1. `ModelAndView`로 뷰를 반환하지 않고 `String`형태로 뷰 논리 이름을 직접 반환
+2. req, res를 사용하지 않고 `@RequestParam`을 통해 요청 파라미터를 직접 받음
+3. `Model`을 파라미터로 넘겨 사용가능
+4. `@GetMapping()`, `@PostMapping()` 어노테이션 사용으로 GET, POST 방식으로 매핑
