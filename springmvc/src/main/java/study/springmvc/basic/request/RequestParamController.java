@@ -94,7 +94,7 @@ public class RequestParamController {
     // 요청 파라미터와 객체 이름이 같아야 됨
     @ResponseBody
     @RequestMapping("/model-attribute-v1")
-    public String modelAtrributeV1(@ModelAttribute HelloData helloData) {
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
         log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
 
         return "ok";
@@ -103,7 +103,7 @@ public class RequestParamController {
     // ModelAttribute 생략 가능 -> RequestParam도 생략가능하니 혼란 조심
     @ResponseBody
     @RequestMapping("/model-attribute-v2")
-    public String modelAtrributeV2(HelloData helloData) {
+    public String modelAttributeV2(HelloData helloData) {
         log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
 
         return "ok";

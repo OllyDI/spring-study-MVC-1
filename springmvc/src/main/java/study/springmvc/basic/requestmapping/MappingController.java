@@ -2,6 +2,7 @@ package study.springmvc.basic.requestmapping;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -109,7 +110,7 @@ public class MappingController {
      * produces = "text/*"
      * produces = "*\/*"
      */
-    @PostMapping(value = "/mapping-produce", produces = "text/html")
+    @PostMapping(value = "/mapping-produce", produces = MediaType.TEXT_HTML_VALUE)
     public String mappingProduces() {
         log.info("mappingProduces");
         return "ok";

@@ -14,14 +14,17 @@ import java.util.Locale;
 
 @Slf4j
 @RestController
-public class ReqeustHeaderController {
+public class RequestHeaderController {
 
     @RequestMapping("/headers")
-    public String headers(HttpServletRequest req, HttpServletResponse res, HttpMethod httpMethod,
-                          Locale locale, @RequestHeader MultiValueMap<String, String> headerMap,
+    public String headers(HttpServletRequest req,
+                          HttpServletResponse res,
+                          HttpMethod httpMethod,
+                          Locale locale,
+                          @RequestHeader MultiValueMap<String, String> headerMap,
                           @RequestHeader("host") String host,
-                          @CookieValue(value = "myCookie", required = false) String cookie) {
-
+                          @CookieValue(value = "myCookie", required = false) String cookie
+    ) {
         log.info("request={}", req);
         log.info("response={}", res);
         log.info("httpMethod={}", httpMethod);
