@@ -25,10 +25,10 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Controller
-public class ReqeustBodyStringController {
+public class RequestBodyStringController {
 
     @PostMapping("/request-body-string-v1")
-    public void reqeustBodyStringV1(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    public void requestBodyStringV1(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
         ServletInputStream inputStream = req.getInputStream();
         String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
@@ -38,7 +38,7 @@ public class ReqeustBodyStringController {
     }
 
     @PostMapping("/request-body-string-v2")
-    public void reqeustBodyStringV2(InputStream inputStream, Writer resWriter) throws IOException {
+    public void requestBodyStringV2(InputStream inputStream, Writer resWriter) throws IOException {
 
         String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
         log.info("messageBody={}", messageBody);
@@ -48,7 +48,7 @@ public class ReqeustBodyStringController {
 
     // messageBody 정보를 직접 조회
     @PostMapping("/request-body-string-v3")
-    public HttpEntity<String> reqeustBodyStringV3(HttpEntity<String> httpEntity) {
+    public HttpEntity<String> requestBodyStringV3(HttpEntity<String> httpEntity) {
 
         String messageBody = httpEntity.getBody();
         log.info("messageBody={}", messageBody);
@@ -59,7 +59,7 @@ public class ReqeustBodyStringController {
     // 가장 일반적인 방식
     @ResponseBody
     @PostMapping("/request-body-string-v4")
-    public String reqeustBodyStringV4(@RequestBody String messageBody) {
+    public String requestBodyStringV4(@RequestBody String messageBody) {
 
         log.info("messageBody={}", messageBody);
 
