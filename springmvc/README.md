@@ -165,9 +165,9 @@ HTTP 메시지 컨버터는 요청, 응답 둘 다 사용
 - HTTP 메시지 컨버터를 사용하는 `@RequestBody` 컨트롤러가 필요로 하는 파라미터 값에 사용
 - `@ResponseBody`도 컨트롤러의 반환 값에 사용
 
-요청: `@RequestBody`와 `HttpEntity`를 처리하는 `ArgumentResolver`가 있음. `ArgumentResolver`들의 HTTP 메시지 컨버터를 사용해서 필요한 객체 생성
+요청: `@RequestBody`, `HttpEntity` 처리하는 `ArgumentResolver` 있음. `ArgumentResolver`들의 HTTP 메시지 컨버터를 사용해서 필요한 객체 생성
 
-응답: `@RequestBody`와 `HttpEntity`를 처리하는 `ReturnValueHandler`가 있음. `ReturnValueHandler`들이 HTTP 메시지 컨버터를 호출해서 응답 결과를 생성
+응답: `@RequestBody`, `HttpEntity` 처리하는 `ReturnValueHandler` 있음. `ReturnValueHandler`들의 HTTP 메시지 컨버터를 호출해서 응답 결과 생성
 
 스프링 MVC는
 - `@RequestBody`와 `@RequestBody`가 있으면 -> `RequestResponseBodyMethodProcessor`(ArgumentResolver) 사용
