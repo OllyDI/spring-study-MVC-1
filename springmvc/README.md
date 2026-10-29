@@ -118,3 +118,20 @@ Thymeleaf 스프링 부트 기본 설정 - 변경시에만 `application.properti
 - spring.thymeleaf.prefix=classpath:/templates/
 - spring.thymeleaf.suffix=.html
 
+<br>
+
+>26.10.29
+
+### HTTP 응답 - HTTP API, 메시지 바디
+
+[ResponseBodyController](src/main/java/study/springmvc/basic/response/ResponseBodyController.java) 코드
+
+line 21 ~ 24 v1 서블릿 방식
+
+line 26 ~ 29 v2 가장 단순한 방식
+
+line 32 ~ 36 v3 v2보다 더 단순한 방식: `@ResponseBody`사용
+
+line 38 ~ 46 v4 JSON 전송 방식 v1: 반환 값을 객체로 지정 `ResponseEntity<>`
+
+line 49 ~ 61 v5 JSON 전송 방식 v2: `ResponseEntity<>`없이 객체 형태 그대로 반환 값 지정 및 `@ResponseStatus()`로 상태 코드 지정
