@@ -135,3 +135,42 @@ line 32 ~ 36 v3 v2보다 더 단순한 방식: `@ResponseBody`사용
 line 38 ~ 46 v4 JSON 전송 방식 v1: 반환 값을 객체로 지정 `ResponseEntity<>`
 
 line 49 ~ 61 v5 JSON 전송 방식 v2: `ResponseEntity<>`없이 객체 형태 그대로 반환 값 지정 및 `@ResponseStatus()`로 상태 코드 지정
+
+<br>
+
+### HTTP 메시지 컨버터
+
+HTTP 메시지 컨버터는 요청, 응답 둘 다 사용
+- `canRead()`, `canWrite()`: 메시지 컨버터가 해당 클래스, 미디어 타입을 지원하는지 체크
+- `read()`, `write()`: 메시지 컨버터를 통해 메시지를 읽고 쓰는 기능
+
+스프링 부트 기본 메시지 컨버터
+- ByteArrayHttpMessageConverter: Byte[] 데이터 처리 - 클래스타입 `Byte[]`, 미디어타입 `*/*`
+- StringHttpMessageConverter: String 문자로 데이터 처리 - 클래스타입 `String`, 미디어타입 `*/*`
+- MappingJackson2HttpMessageConverter: application/json 처리 - 클래스타입 객체 또는 `HashMap`, 미디어타입 `application/json`
+
+<br>
+
+### 요청 매핑 헨들러 어댑터 구조
+
+`@RequestMapping`을 처리하는 핸들러 어댑터가 `RequestMappingHandlerAdapter`(요청 매핑 핸들러 어댑터)
+
+핸들러 어댑터가 컨트롤러의 매우 다양한 파라미터를 호출, 사용할 수 있는데 이유 -> **`ArgumentResolver`**
+
+**`ArgumentResolver`(요청): 컨트롤러(핸들러)가 필요로 하는 다양한 파라미터의 값(객체)을 생성**
+
+**`ReturnValueHandler`(응답): : 컨트롤러의 반환 값을 변환**
+
+앞서 설명한 HTTP 메시지 컨버터의 위치 -> `ArgumentResolver`, `ReturnValueHandler` 두 곳 모두에 위치함
+- HTTP 메시지 컨버터를 사용하는 `@RequestBody` 컨트롤러가 필요로 하는 파라미터 값에 사용
+- `@ResponseBody`도 컨트롤러의 반환 값에 사용
+
+요청: `@RequestBody`와 `HttpEntity`를 처리하는 `ArgumentResolver`가 있음. `ArgumentResolver`들의 HTTP 메시지 컨버터를 사용해서 필요한 객체 생성
+
+응답: `@RequestBody`와 `HttpEntity`를 처리하는 `ReturnValueHandler`가 있음. `ReturnValueHandler`들이 HTTP 메시지 컨버터를 호출해서 응답 결과를 생성
+
+스프링 MVC는
+- `@RequestBody`와 `@RequestBody`가 있으면 -> `RequestResponseBodyMethodProcessor`(ArgumentResolver) 사용
+- `HttpEntity`가 있으면 -> `HttpEntityMethodProcessor`(ArgumentResolver) 사용
+
+스프링 리졸버 관련 기능을 확장 -> `WebMvcConfigurer`를 확장하면 됨
