@@ -34,7 +34,7 @@ public class ItemRepository {
         return new ArrayList<>(store.values());
     }
 
-    // 원래는 아이디를 제외한 객체를 생성하여 하는 게 좋음
+    // 원래는 아이디를 제외한 객체Dto를 생성하여 하는 게 좋음
     public void update(Long itemId, Item updateParam) {
         Item findItem = findById(itemId);
         findItem.setItemName(updateParam.getItemName());

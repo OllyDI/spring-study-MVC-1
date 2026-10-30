@@ -62,9 +62,9 @@ public class BasicItemController {
      * ModelAttribute의 이름을 생략하면 클래스의 이름에서 앞 글자만 소문자로 변경하여 이름으로 사용 -> Item = item
      */
     //    @PostMapping("/add")
-    public String addItemV2(@ModelAttribute("item") Item item) {
+    public String addItemV2(@ModelAttribute("item") Item item, Model model) {
         itemRepository.save(item);
-        // model.addAttribute("item", item);
+        model.addAttribute("item", item);
         return "basic/item";
     }
 
