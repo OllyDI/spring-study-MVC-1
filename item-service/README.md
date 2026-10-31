@@ -52,3 +52,26 @@ line 30 `th:each` 반복 출력, `${...}` 변수 표현식
 
 line 22 `th:value` 속성 변경
 
+
+
+<br>
+
+>26.10.31
+
+### 상품 등록 폼
+
+[addForm.html](src/main/resources/templates/basic/addForm.html), [ItemRepository](src/main/java/hello/itemservice/domain/item/ItemRepository.java) 코드
+
+line 18 `th:action` 폼 액션 이벤트
+
+line 37 ~ 94 상품 등록 접속 및 처리는 url은 같고 GET, POST만 다르게 구현해서 사용
+
+line 93 `return "redirect:/basic/items/{itemId}"` 이후 현재 아이템 아이디를 보고 리다이렉션
+
+<br>
+
+### 상품 등록 처리
+1. line 43 ~ 57 `@RequestParam` - 도메인, 파라미터 이름 변경시 문제 발생. 코드도 길어짐
+2. line 59 ~ 69 `@ModelAttribute(...)` - 코드 간결, 파라미터가 변경되도 도메인만 변경하면 됨
+3. line 72 ~ 77 `@ModelAttribute` 이름 생략 시 객체 이름 사용(Item -> item). `@ModelAttribute` 모델 추가 기능도 함 -> `model.addAttribute()`제거
+4. line 79 ~ 85 `@ModelAttribute` 자체도 생략 가능
